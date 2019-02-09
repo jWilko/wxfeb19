@@ -1,3 +1,4 @@
 {
-  "port" : 9001
+  "port" : 9001,
+  "validSortOptions" : ["Low","High","Ascending","Descending","Recommended"]
 }
