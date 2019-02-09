@@ -1,0 +1,4 @@
+{
+  "PATH_NOT_FOUND": "The requested path is not recognised",
+  "GENERIC_SERVER_EXCEPTION": "Something went wrong with your request. Sorry 'bout that."
+}
