@@ -2,8 +2,12 @@
 
 const router = require('express').Router();
 
+const userController = require('../controllers/user.controller.js');
+
 router.get('/', (req, res, next) => {
-    res.send('Howdy. Thanks for visiting.');
+    return res.redirect('/user');
 });
+
+router.get('/user', userController.get);
 
 module.exports = router;
