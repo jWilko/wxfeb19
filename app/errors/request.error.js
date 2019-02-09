@@ -4,10 +4,20 @@ const strings = require('../resources/strings.json');
 const ResponseBody = require('../models/ResponseBody.model.js');
 
 const requestError = (err, req, res, next) => {
-    console.error('Exception caught : ', err);
+    let errorMessage;
+    let status;
 
-    const responseBody = new ResponseBody(strings.GENERIC_SERVER_EXCEPTION);
-    res.status(500);
+    if(typeof err === 'string') {
+        status = 400;
+        errorMessage = err;
+    } else {
+        console.error('Exception caught : ', err);
+        status = 500;
+        errorMessage = strings.GENERIC_SERVER_EXCEPTION;
+    }
+
+    const responseBody = new ResponseBody(errorMessage);
+    res.status(status);
     return res.send(responseBody);
 };
 
