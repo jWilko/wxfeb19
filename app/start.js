@@ -25,7 +25,7 @@ app.use(pathNotFound);
 app.use(requestError);
 
 // Start listening
-const listener = app.listen(config.port, () => {
+const listener = app.listen(process.env.PORT || config.port, () => {
     const actualPort = listener.address().port;
     console.log(`Express server started. Listening on port ${actualPort}\n\n`);
 });
