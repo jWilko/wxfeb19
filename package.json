@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app/start.js",
     "debug": "node --inspect app/start.js",
-    "test": "istanbul cover _mocha --recursive 'app/**/*.spec.js'"
+    "test": "nyc _mocha --recursive 'app/**/*.spec.js'"
   },
   "repository": {
     "type": "git",
@@ -20,14 +20,16 @@
   "homepage": "https://github.com/jWilko/wxfeb19#readme",
   "devDependencies": {
     "chai": "~4.2.0",
-    "istanbul": "~0.4.5",
     "mocha": "~5.2.0",
+    "nyc": "~13.2.0",
     "proxyquire": "^2.1.0",
     "sinon": "~7.2.3"
   },
   "dependencies": {
     "body-parser": "~1.18.3",
     "express": "~4.16.4",
-    "helmet": "~3.15.0"
+    "helmet": "~3.15.0",
+    "request": "~2.88.0",
+    "request-promise-native": "~1.0.5"
   }
 }
