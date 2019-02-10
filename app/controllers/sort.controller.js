@@ -26,7 +26,7 @@ controller.getData = async (req, res, next) => {
         if(res.locals.sortOption === 'Recommended') {
             res.locals.products = await dataService.getRecommendedProducts();
         } else {
-            res.locals.products = await dataService.getAllProducts(req, res);
+            res.locals.products = await dataService.getAllProducts();
         }
         return next();
     } catch (err) {

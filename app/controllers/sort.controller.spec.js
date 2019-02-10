@@ -1,6 +1,6 @@
 "use strict";
 
-const {Stubs, expect} = (require('../../test/helpers/testBase.js'));
+const {Stubs, expect, proxyquire, sinon} = (require('../../test/helpers/testBase.js'));
 
 describe('Sort controller', () => {
     let stubs;
@@ -8,7 +8,13 @@ describe('Sort controller', () => {
 
     beforeEach(() => {
         stubs = new Stubs();
-        target = require('./sort.controller.js');
+        stubs.services.data = {
+            getRecommendedProducts : sinon.stub(),
+            getAllProducts : sinon.stub()
+        };
+        target = proxyquire(`${__dirname}/sort.controller.js`, {
+            '../services/data.service.js' : stubs.services.data
+        });
     });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,7 +68,71 @@ describe('Sort controller', () => {
             expect(typeof target.getData).to.equal('function');
         });
 
-        // TODO : Add tests
+        describe('when sort option is `Recommended`', () => {
+            describe('when there are no errors', () => {
+                beforeEach(async () => {
+                    stubs.res.locals.sortOption = 'Recommended';
+                    stubs.services.data.getRecommendedProducts.returns(Promise.resolve('some products'));
+                    await target.getData(stubs.req, stubs.res, stubs.next);
+                });
+                it('should capture the products data',  function () {
+                    expect(stubs.res.locals.products).to.equal('some products');
+                });
+                it('should call next with no params',  function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+
+            describe('when there are errors', () => {
+                beforeEach(async () => {
+                    stubs.res.locals.sortOption = 'Recommended';
+                    stubs.services.data.getRecommendedProducts.returns(Promise.reject({message:'some error'}));
+                    await target.getData(stubs.req, stubs.res, stubs.next);
+                });
+                it('should not capture the products data',  function () {
+                    expect(stubs.res.locals.products).to.equal(undefined);
+                });
+                it('should call next with the error object',  function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0][0].message).to.equal('some error');
+                });
+            });
+
+        });
+
+        describe('when sort option is not `Recommended`', () => {
+            describe('when there are no errors', () => {
+                beforeEach(async () => {
+                    stubs.res.locals.sortOption = 'High';
+                    stubs.services.data.getAllProducts.returns(Promise.resolve('some products'));
+                    await target.getData(stubs.req, stubs.res, stubs.next);
+                });
+                it('should capture the products data',  function () {
+                    expect(stubs.res.locals.products).to.equal('some products');
+                });
+                it('should call next with no params',  function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+
+            describe('when there are errors', () => {
+                beforeEach(async () => {
+                    stubs.res.locals.sortOption = 'High';
+                    stubs.services.data.getAllProducts.returns(Promise.reject({message:'some error'}));
+                    await target.getData(stubs.req, stubs.res, stubs.next);
+                });
+                it('should not capture the products data',  function () {
+                    expect(stubs.res.locals.products).to.equal(undefined);
+                });
+                it('should call next with the error object',  function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0][0].message).to.equal('some error');
+                });
+            });
+        });
+
     });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
