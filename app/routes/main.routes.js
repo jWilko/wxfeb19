@@ -13,7 +13,7 @@ router.get('/user', userController.get);
 
 router.get('/sort',
     sortController.validateSortOption,
-    sortController.getProducts,
+    sortController.getData,
     sortController.sort,
     sortController.respond
 );

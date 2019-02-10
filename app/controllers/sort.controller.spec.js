@@ -3,15 +3,12 @@
 const {Stubs, expect, sinon, proxyquire} = (require('../../test/helpers/testBase.js'));
 
 describe('Sort controller', () => {
-    let target;
     let stubs;
+    let target;
 
     beforeEach(() => {
         stubs = new Stubs();
-        stubs.models.Product = sinon.stub().returns({iam:'Product model instance'});
-        target = proxyquire(`${__dirname}/sort.controller.js`, {
-            '../models/Product.model.js' : stubs.models.Product
-        });
+        target = require('./sort.controller.js');
     });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,26 +56,16 @@ describe('Sort controller', () => {
 
     });
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    describe('getProducts method', () => {
+    describe('getData method', () => {
 
         it('should be a function', function () {
-            expect(typeof target.getProducts).to.equal('function');
+            expect(typeof target.getData).to.equal('function');
         });
 
-        describe('When called', () => {
-            beforeEach(() => {
-                target.getProducts(stubs.req, stubs.res, stubs.next);
-            });
+        // TODO : Add tests
 
-            it('should call next with no params', function () {
-                expect(stubs.next.callCount).to.equal(1);
-                expect(stubs.next.args[0].length).to.equal(0);
-            });
-        });
     });
-
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,14 +76,111 @@ describe('Sort controller', () => {
         });
 
         describe('When called', () => {
+            let testProducts;
+
             beforeEach(() => {
-                target.sort(stubs.req, stubs.res, stubs.next);
+                testProducts = {
+                    a : { name: 'Blurry eyes serum', price: 45, quantity: 8 },
+                    b : { name: 'Early adopter blade', price: 12, quantity: 78 },
+                    c : { name: 'Dangerous brain', price: 3, quantity: 5 },
+                    d : { name: 'Articulated chicken wing', price: 29, quantity: 2023 },
+                    e : { name: 'Carry on carrot', price: 15, quantity: 0 },
+                    f : { name: 'Articulated chicken wing', price: 41, quantity: 16 }
+                };
+                stubs.res.locals.products = Object.values(testProducts);
             });
 
-            it('should call next with no params', function () {
-                expect(stubs.next.callCount).to.equal(1);
-                expect(stubs.next.args[0].length).to.equal(0);
+            describe('and the sort order is Low', () => {
+                beforeEach(() => {
+                    stubs.res.locals.sortOption = 'Low';
+                    target.sort(stubs.req, stubs.res, stubs.next);
+                });
+                it('should order by Low to High Price', function () {
+                    expect(stubs.res.locals.sortedProducts[0]).to.deep.equal(testProducts.c);
+                    expect(stubs.res.locals.sortedProducts[1]).to.deep.equal(testProducts.b);
+                    expect(stubs.res.locals.sortedProducts[2]).to.deep.equal(testProducts.e);
+                    expect(stubs.res.locals.sortedProducts[3]).to.deep.equal(testProducts.d);
+                    expect(stubs.res.locals.sortedProducts[4]).to.deep.equal(testProducts.f);
+                    expect(stubs.res.locals.sortedProducts[5]).to.deep.equal(testProducts.a);
+                });
+                it('should call next with no params', function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
             });
+            describe('and the sort order is High', () => {
+                beforeEach(() => {
+                    stubs.res.locals.sortOption = 'High';
+                    target.sort(stubs.req, stubs.res, stubs.next);
+                });
+                it('should order by High to Low Price', function () {
+                    expect(stubs.res.locals.sortedProducts[0]).to.deep.equal(testProducts.a);
+                    expect(stubs.res.locals.sortedProducts[1]).to.deep.equal(testProducts.f);
+                    expect(stubs.res.locals.sortedProducts[2]).to.deep.equal(testProducts.d);
+                    expect(stubs.res.locals.sortedProducts[3]).to.deep.equal(testProducts.e);
+                    expect(stubs.res.locals.sortedProducts[4]).to.deep.equal(testProducts.b);
+                    expect(stubs.res.locals.sortedProducts[5]).to.deep.equal(testProducts.c);
+                });
+                it('should call next with no params', function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+            describe('and the sort order is Ascending', () => {
+                beforeEach(() => {
+                    stubs.res.locals.sortOption = 'Ascending';
+                    target.sort(stubs.req, stubs.res, stubs.next);
+                });
+                it('should order by A to Z on name', function () {
+                    expect(stubs.res.locals.sortedProducts[0]).to.deep.equal(testProducts.d);
+                    expect(stubs.res.locals.sortedProducts[1]).to.deep.equal(testProducts.f);
+                    expect(stubs.res.locals.sortedProducts[2]).to.deep.equal(testProducts.a);
+                    expect(stubs.res.locals.sortedProducts[3]).to.deep.equal(testProducts.e);
+                    expect(stubs.res.locals.sortedProducts[4]).to.deep.equal(testProducts.c);
+                    expect(stubs.res.locals.sortedProducts[5]).to.deep.equal(testProducts.b);
+                });
+                it('should call next with no params', function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+            describe('and the sort order is Descending', () => {
+                beforeEach(() => {
+                    stubs.res.locals.sortOption = 'Descending';
+                    target.sort(stubs.req, stubs.res, stubs.next);
+                });
+                it('should order by Z to A on name', function () {
+                    expect(stubs.res.locals.sortedProducts[0]).to.deep.equal(testProducts.b);
+                    expect(stubs.res.locals.sortedProducts[1]).to.deep.equal(testProducts.c);
+                    expect(stubs.res.locals.sortedProducts[2]).to.deep.equal(testProducts.e);
+                    expect(stubs.res.locals.sortedProducts[3]).to.deep.equal(testProducts.a);
+                    expect(stubs.res.locals.sortedProducts[4]).to.deep.equal(testProducts.d);
+                    expect(stubs.res.locals.sortedProducts[5]).to.deep.equal(testProducts.f);
+                });
+                it('should call next with no params', function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+            describe('and the sort order is Recommended', () => {
+                beforeEach(() => {
+                    stubs.res.locals.sortOption = 'Recommended';
+                    target.sort(stubs.req, stubs.res, stubs.next);
+                });
+                it('should order by high to low popularity', function () {
+                    expect(stubs.res.locals.sortedProducts[0]).to.deep.equal(testProducts.d);
+                    expect(stubs.res.locals.sortedProducts[1]).to.deep.equal(testProducts.b);
+                    expect(stubs.res.locals.sortedProducts[2]).to.deep.equal(testProducts.f);
+                    expect(stubs.res.locals.sortedProducts[3]).to.deep.equal(testProducts.a);
+                    expect(stubs.res.locals.sortedProducts[4]).to.deep.equal(testProducts.c);
+                    expect(stubs.res.locals.sortedProducts[5]).to.deep.equal(testProducts.e);
+                });
+                it('should call next with no params', function () {
+                    expect(stubs.next.callCount).to.equal(1);
+                    expect(stubs.next.args[0].length).to.equal(0);
+                });
+            });
+
         });
     });
 
