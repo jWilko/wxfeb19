@@ -7,8 +7,12 @@ class Stubs {
 
     constructor() {
         this.models = {};
-        this.req = sinon.stub();
+        this.services = {};
+        this.req = {
+            query : {}
+        };
         this.res = {
+            locals : {},
             send: sinon.stub(),
             status: sinon.stub()
         };
