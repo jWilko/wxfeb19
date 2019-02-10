@@ -14,7 +14,7 @@ describe('User controller', () => {
         });
     });
 
-//- get  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     describe('get method', () => {
 
         it('should be a function', function () {
@@ -34,7 +34,6 @@ describe('User controller', () => {
             });
         });
     });
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     describe('respond method', () => {
@@ -59,6 +58,5 @@ describe('User controller', () => {
             });
         });
     });
-
 
 });

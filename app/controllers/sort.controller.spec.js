@@ -1,6 +1,6 @@
 "use strict";
 
-const {Stubs, expect, sinon, proxyquire} = (require('../../test/helpers/testBase.js'));
+const {Stubs, expect} = (require('../../test/helpers/testBase.js'));
 
 describe('Sort controller', () => {
     let stubs;
@@ -32,7 +32,6 @@ describe('Sort controller', () => {
             });
         });
 
-
         describe('When called with an invalid sort option', () => {
             beforeEach(() => {
                 stubs.req.query = { sortOption : 'Date' };
@@ -40,7 +39,7 @@ describe('Sort controller', () => {
             });
             it('should call next with an error message', function () {
                 expect(stubs.next.callCount).to.equal(1);
-                expect(stubs.next.args[0][0]).to.equal('Invalid sort option provided');
+                expect(stubs.next.args[0][0]).to.equal('Invalid sort option provided.');
             });
         });
 
@@ -50,7 +49,7 @@ describe('Sort controller', () => {
             });
             it('should call next with an error message', function () {
                 expect(stubs.next.callCount).to.equal(1);
-                expect(stubs.next.args[0][0]).to.equal('sortOption parameter must be provided');
+                expect(stubs.next.args[0][0]).to.equal('sortOption parameter must be provided.');
             });
         });
 
@@ -64,9 +63,7 @@ describe('Sort controller', () => {
         });
 
         // TODO : Add tests
-
     });
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     describe('sort method', () => {
@@ -183,7 +180,6 @@ describe('Sort controller', () => {
 
         });
     });
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     describe('respond method', () => {

@@ -29,7 +29,7 @@ controller.getTotal = async (req, res, next) => {
         return next();
     } catch (err) {
         err.appMessage = strings.TROLLEY_CALCULATION_FAILED;
-        next(err);
+        return next(err);
     }
 };
 

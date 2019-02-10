@@ -1,6 +1,6 @@
 "use strict";
 
-const {Stubs, expect, sinon, proxyquire} = (require('../../test/helpers/testBase.js'));
+const {Stubs, expect} = (require('../../test/helpers/testBase.js'));
 
 describe('Trolley controller', () => {
     let stubs;
@@ -38,7 +38,7 @@ describe('Trolley controller', () => {
                         { name: "vegemite", quantity: 2 }
                     ]
                 };
-            })
+            });
 
             describe('and top level properties are missing', () => {
                 beforeEach(() => {
@@ -114,7 +114,7 @@ describe('Trolley controller', () => {
                 expect(stubs.res.status.callCount).to.equal(1);
                 expect(stubs.res.status.args[0][0]).to.equal(200);
             });
-            it('should send the existing sorted products list to the requester', function () {
+            it('should send the trolley total to the requester as a string', function () {
                 expect(stubs.res.send.callCount).to.equal(1);
                 expect(stubs.res.send.args[0][0]).to.equal('101.99');
             });
