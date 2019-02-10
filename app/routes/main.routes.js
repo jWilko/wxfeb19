@@ -10,7 +10,10 @@ router.get('/', (req, res, next) => {
     return res.redirect('/user');
 });
 
-router.get('/user', userController.get);
+router.get('/user',
+    userController.get,
+    userController.respond
+);
 
 router.get('/sort',
     sortController.validateSortOption,
