@@ -4,6 +4,7 @@ const router = require('express').Router();
 
 const userController = require('../controllers/user.controller.js');
 const sortController = require('../controllers/sort.controller.js');
+const trolleyController = require('../controllers/trolley.controller.js');
 
 router.get('/', (req, res, next) => {
     return res.redirect('/user');
@@ -16,6 +17,12 @@ router.get('/sort',
     sortController.getData,
     sortController.sort,
     sortController.respond
+);
+
+router.post('/trolleyTotal',
+    trolleyController.validateTrolleyData,
+    trolleyController.getTotal,
+    trolleyController.respond
 );
 
 module.exports = router;

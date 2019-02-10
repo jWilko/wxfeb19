@@ -62,6 +62,19 @@ service.getRecommendedProducts = async () => {
     });
 
     return products;
-}
+};
+
+service.getTrolleyTotal = async (trolleyData) => {
+    const requestOpts = {
+        method: 'POST',
+        url: `${config.dataServiceBaseUrl}/trolleyCalculator`,
+        qs: {
+            token: config.token
+        },
+        body: trolleyData,
+        json: true
+    };
+    return await requestPromise(requestOpts);
+};
 
 module.exports = service;
