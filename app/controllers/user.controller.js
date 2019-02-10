@@ -1,5 +1,6 @@
 "use strict";
 
+const config = require('../resources/config.json');
 const User = require('../models/User.model.js');
 
 const controller = {};
@@ -7,8 +8,8 @@ const controller = {};
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 controller.get = (req, res, next) => {
     const userProps = {
-        name : 'Hercules',
-        token : '1234-455662-22233333-3333'
+        name : config.username,
+        token : config.token
     };
     res.locals.user = new User(userProps);
     return next();
