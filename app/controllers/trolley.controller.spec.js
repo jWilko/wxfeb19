@@ -1,6 +1,6 @@
 "use strict";
 
-const {Stubs, expect} = (require('../../test/helpers/testBase.js'));
+const {Stubs, expect, proxyquire, sinon} = (require('../../test/helpers/testBase.js'));
 
 describe('Trolley controller', () => {
     let stubs;
@@ -8,8 +8,14 @@ describe('Trolley controller', () => {
 
     beforeEach(() => {
         stubs = new Stubs();
-        target = require('./trolley.controller.js');
+        stubs.services.data = {
+            getTrolleyTotal : sinon.stub()
+        };
+        target = proxyquire(`${__dirname}/trolley.controller.js`, {
+            '../services/data.service.js' : stubs.services.data
+        });
     });
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     describe('validateTrolleyData method', () => {
@@ -94,7 +100,35 @@ describe('Trolley controller', () => {
             expect(typeof target.getTotal).to.equal('function');
         });
 
-        // TODO : Add tests
+        describe('when there are no errors', () => {
+            beforeEach(async () => {
+                stubs.services.data.getTrolleyTotal.returns(Promise.resolve('some price'));
+                await target.getTotal(stubs.req, stubs.res, stubs.next);
+            });
+            it('should capture the calculated trolley total',  function () {
+                expect(stubs.res.locals.trolleyTotalPrice).to.equal('some price');
+            });
+            it('should call next with no params',  function () {
+                expect(stubs.next.callCount).to.equal(1);
+                expect(stubs.next.args[0].length).to.equal(0);
+            });
+        });
+
+        describe('when there are errors', () => {
+            beforeEach(async () => {
+                stubs.services.data.getTrolleyTotal.returns(Promise.reject({message:'some error'}));
+                await target.getTotal(stubs.req, stubs.res, stubs.next);
+            });
+            it('should not capture the calculated trolley total',  function () {
+                expect(stubs.res.locals.trolleyTotalPrice).to.equal(undefined);
+            });
+            it('should call next with the error object and a custom appMessage',  function () {
+                expect(stubs.next.callCount).to.equal(1);
+                expect(stubs.next.args[0][0].message).to.equal('some error');
+                expect(stubs.next.args[0][0].appMessage).to.contain('Trolley Total calculation was unsuccessful');
+            });
+        });
+
     });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
