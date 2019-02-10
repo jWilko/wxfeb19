@@ -13,7 +13,7 @@ const requestError = (err, req, res, next) => {
     } else {
         console.error('Exception caught : ', err);
         status = 500;
-        errorMessage = strings.GENERIC_SERVER_EXCEPTION;
+        errorMessage = err.appMessage || strings.GENERIC_SERVER_EXCEPTION;
     }
 
     const responseBody = new ResponseBody(errorMessage);

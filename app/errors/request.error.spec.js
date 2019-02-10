@@ -37,20 +37,42 @@ describe('Request error', () => {
             });
         });
         describe('when the err is not a string', function () {
-            beforeEach(() => {
-                target({}, stubs.req, stubs.res, stubs.next);
+            describe('and there is not an appMessage property', function () {
+                beforeEach(() => {
+                    target({}, stubs.req, stubs.res, stubs.next);
+                });
+                it('should create a ResponseBody object with a generic message', function () {
+                    expect(stubs.models.ResponseBody.callCount).to.equal(1);
+                    expect(stubs.models.ResponseBody.args[0][0]).to.contain('Something went wrong');
+                });
+                it('should set the response status to 500', function () {
+                    expect(stubs.res.status.callCount).to.equal(1);
+                    expect(stubs.res.status.args[0][0]).to.equal(500);
+                });
+                it('should send the ResponseBody instance to the requester', function () {
+                    expect(stubs.res.send.callCount).to.equal(1);
+                    expect(stubs.res.send.args[0][0].iam).to.equal('ResponseBody model instance');
+                });
             });
-            it('should create a RespoonsBody object', function () {
-                expect(stubs.models.ResponseBody.callCount).to.equal(1);
-                expect(stubs.models.ResponseBody.args[0][0]).to.contain('Something went wrong');
-            });
-            it('should set the response status to 500', function () {
-                expect(stubs.res.status.callCount).to.equal(1);
-                expect(stubs.res.status.args[0][0]).to.equal(500);
-            });
-            it('should send the ResponseBody instance to the requester', function () {
-                expect(stubs.res.send.callCount).to.equal(1);
-                expect(stubs.res.send.args[0][0].iam).to.equal('ResponseBody model instance');
+            describe('and there is an appMessage property', function () {
+                beforeEach(() => {
+                    const testErr = {
+                        appMessage : 'Some app generated message'
+                    };
+                    target(testErr, stubs.req, stubs.res, stubs.next);
+                });
+                it('should create a ResponseBody object with the appMessage', function () {
+                    expect(stubs.models.ResponseBody.callCount).to.equal(1);
+                    expect(stubs.models.ResponseBody.args[0][0]).to.equal('Some app generated message');
+                });
+                it('should set the response status to 500', function () {
+                    expect(stubs.res.status.callCount).to.equal(1);
+                    expect(stubs.res.status.args[0][0]).to.equal(500);
+                });
+                it('should send the ResponseBody instance to the requester', function () {
+                    expect(stubs.res.send.callCount).to.equal(1);
+                    expect(stubs.res.send.args[0][0].iam).to.equal('ResponseBody model instance');
+                });
             });
         });
     });
