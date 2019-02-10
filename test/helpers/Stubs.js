@@ -6,6 +6,7 @@ const sinon = require('sinon');
 class Stubs {
 
     constructor() {
+        this.libs = {};
         this.models = {};
         this.services = {};
         this.req = {
