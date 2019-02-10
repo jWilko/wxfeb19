@@ -12,7 +12,7 @@ controller.validateTrolleyData = (req, res, next) => {
         return next(strings.TROLLEY_NO_BODY);
     }
 
-    res.locals.trolleyData = req.body || {};
+    res.locals.trolleyData = req.body;
     res.locals.trolleyData.products = res.locals.trolleyData.products || [];
     res.locals.trolleyData.specials = res.locals.trolleyData.specials || [];
     res.locals.trolleyData.quantities = res.locals.trolleyData.quantities || [];
