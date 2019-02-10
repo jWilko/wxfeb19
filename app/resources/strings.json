@@ -2,5 +2,7 @@
   "GENERIC_SERVER_EXCEPTION": "Something went wrong with your request. Sorry 'bout that.",
   "PATH_NOT_FOUND": "The requested path is not recognised",
   "SORT_OPTION_REQUIRED" : "sortOption parameter must be provided",
-  "SORT_OPTIONS_INVALID" : "Invalid sort option provided"
+  "SORT_OPTIONS_INVALID" : "Invalid sort option provided",
+  "PRODUCT_DATA_UNAVAILABLE" : "Failed to retrieve the product data",
+  "SHOPPER_DATA_UNAVAILABLE" : "Failed to retrieve the shopper data"
 }
