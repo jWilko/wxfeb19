@@ -6,7 +6,11 @@ const controller = {};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 controller.get = (req, res, next) => {
-    res.locals.user = new User();
+    const userProps = {
+        name : 'Hercules',
+        token : '1234-455662-22233333-3333'
+    };
+    res.locals.user = new User(userProps);
     return next();
 };
 

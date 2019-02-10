@@ -2,9 +2,9 @@
 
 class User {
 
-    constructor() {
-        this.name= "test";
-        this.token = "1234-455662-22233333-3333";
+    constructor(props) {
+        this.name= props.name;
+        this.token = props.token;
     }
 
 }

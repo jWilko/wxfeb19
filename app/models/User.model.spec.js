@@ -16,13 +16,17 @@ describe('User Model', () => {
         let result;
 
         beforeEach(() => {
-            result = new target();
+            const testProps = {
+                name : 'some name',
+                token : 'some token'
+            };
+            result = new target(testProps);
         });
         it('should assign name property', function () {
-            expect(result.name).to.equal('test');
+            expect(result.name).to.equal('some name');
         });
         it('should assign token property', function () {
-            expect(result.token).to.equal('1234-455662-22233333-3333');
+            expect(result.token).to.equal('some token');
         });
     });
 
