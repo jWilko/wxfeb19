@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app/start.js",
     "debug": "node --inspect app/start.js",
-    "test": "nyc _mocha --recursive 'app/**/*.spec.js'"
+    "test": "nyc _mocha --timeout 10000 --recursive 'app/**/*.spec.js'"
   },
   "repository": {
     "type": "git",
