@@ -34,6 +34,12 @@ controller.getTotal = async (req, res, next) => {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+controller.calcTotal = (req, res, next) => {
+    res.locals.trolleyTotalPrice = 'not implemented';
+    return next();
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 controller.respond = (req, res, next) => {
     res.status(200);
     return res.send(res.locals.trolleyTotalPrice.toString());

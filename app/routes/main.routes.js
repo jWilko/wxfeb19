@@ -28,4 +28,10 @@ router.post('/trolleyTotal',
     trolleyController.respond
 );
 
+router.post('/localTrolleyTotal',
+    trolleyController.validateTrolleyData,
+    trolleyController.calcTotal,
+    trolleyController.respond
+);
+
 module.exports = router;

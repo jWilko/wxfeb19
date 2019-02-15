@@ -6,5 +6,6 @@
   "PRODUCT_DATA_UNAVAILABLE" : "Failed to retrieve the product data.",
   "SHOPPER_DATA_UNAVAILABLE" : "Failed to retrieve the shopper data.",
   "TROLLEY_NO_BODY" : "Invalid request. Body data is required.",
+  "TROLLEY_INVALID_MISSING_PRODUCT" : "Invalid request. Product details missing for specified quantity.",
   "TROLLEY_CALCULATION_FAILED" : "Trolley Total calculation was unsuccessful. Please check your data."
 }
